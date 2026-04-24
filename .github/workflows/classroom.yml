@@ -1,0 +1,92 @@
+name: Autograding Tests
+'on':
+  - push
+  - repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check File Existence
+        id: check-files
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: Check File Existence
+          setup-command: ''
+          command: |
+            test -f index.html
+            test -f math-logic.js
+            test -f style.css
+          timeout: 10
+          max-score: 20
+
+      - name: Check UI Elements
+        id: check-ui
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: Check UI Elements
+          setup-command: ''
+          command: |
+            grep -q 'id="joystick-handle"' index.html
+            grep -q 'id="joystick-base"' index.html
+            grep -q 'id="raw-offset"' index.html
+            grep -q 'id="distance"' index.html
+            grep -q 'id="power"' index.html
+            grep -q 'id="angle"' index.html
+          timeout: 10
+          max-score: 20
+
+      - name: Check Pythagorean Math
+        id: check-math-pythagorean
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: Check Pythagorean Math
+          setup-command: ''
+          command: |
+            grep -q "Math.sqrt" math-logic.js
+            grep -E "dx \* dx \+ dy \* dy|dx\*\*2 \+ dy\*\*2" math-logic.js
+          timeout: 10
+          max-score: 20
+
+      - name: Check Clamping Logic
+        id: check-math-clamping
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: Check Clamping Logic
+          setup-command: ''
+          command: |
+            grep -q "RADIUS / distance" math-logic.js
+            grep -q "distance > RADIUS" math-logic.js
+          timeout: 10
+          max-score: 20
+
+      - name: Check Normalization & Angle
+        id: check-math-normalization
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: Check Normalization & Angle
+          setup-command: ''
+          command: |
+            grep -q "Math.atan2" math-logic.js
+            grep -q "180 / Math.PI" math-logic.js
+            grep -q "/ RADIUS" math-logic.js
+          timeout: 10
+          max-score: 20
+
+      - name: Autograding Reporter
+        uses: education/autograding-grading-reporter@v1
+        env:
+          CHECK-FILES_RESULTS: "${{steps.check-files.outputs.result}}"
+          CHECK-UI_RESULTS: "${{steps.check-ui.outputs.result}}"
+          CHECK-MATH-PYTHAGOREAN_RESULTS: "${{steps.check-math-pythagorean.outputs.result}}"
+          CHECK-MATH-CLAMPING_RESULTS: "${{steps.check-math-clamping.outputs.result}}"
+          CHECK-MATH-NORMALIZATION_RESULTS: "${{steps.check-math-normalization.outputs.result}}"
+        with:
+          runners: check-files,check-ui,check-math-pythagorean,check-math-clamping,check-math-normalization

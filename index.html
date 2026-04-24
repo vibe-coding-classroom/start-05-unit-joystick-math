@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Joystick Math | 搖桿限位數學：勾股定理</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Joystick Math</h1>
+            <p class="subtitle">Unit 05: Geometric Constraint & Normalization</p>
+        </header>
+
+        <!-- Telemetry Dashboard -->
+        <div class="telemetry-panel">
+            <div class="data-field">
+                <span class="data-label">Raw Offset (dx, dy)</span>
+                <span id="raw-offset" class="data-value">0, 0</span>
+            </div>
+            <div class="data-field">
+                <span class="data-label">Distance (d)</span>
+                <span id="distance" class="data-value">0.00</span>
+            </div>
+            <div class="data-field">
+                <span class="data-label">Power (%)</span>
+                <span id="power" class="data-value">0%</span>
+            </div>
+            <div class="data-field">
+                <span class="data-label">Angle (Deg)</span>
+                <span id="angle" class="data-value">0°</span>
+            </div>
+        </div>
+
+        <!-- Joystick UI -->
+        <div class="joystick-container" id="joystick-container">
+            <div class="joystick-base" id="joystick-base">
+                <div class="power-ring"></div>
+                <div class="joystick-handle" id="joystick-handle"></div>
+            </div>
+        </div>
+
+        <div class="logic-hint">
+            <strong>幾何邏輯：</strong><br>
+            1. 勾股定理：d = √(dx² + dy²)<br>
+            2. 限位比例：ratio = R / d (當 d > R)<br>
+            3. 標準化推力：Power = d / R
+        </div>
+    </div>
+
+    <script src="math-logic.js"></script>
+</body>
+</html>
