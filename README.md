@@ -1,5 +1,3 @@
-Viewed start-05-unit-joystick-math.html:1-566
-
 針對 **`start-05-unit-joystick-math` (搖桿限位數學：勾股定理的應用)** 單元，這是學員從「捕捉數據」進階到「處理邏輯」的數學轉捩點。它要求學員具備 **幾何約束實作 (Geometric Constraint Implementation)** 與 **數值歸一化 (Normalization)** 的能力，學習如何利用勾股定理防止搖桿頭「飛出底座」，並將像素座標轉化為機器人能理解的動力百分比與方向弧度。
 
 以下是在 **GitHub Classroom** 部署其作業 (Assignments) 的具體建議：
